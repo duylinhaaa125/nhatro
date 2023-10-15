@@ -46,47 +46,71 @@ public class ChiTietPhongTroController {
 	}
 	
 	@PostMapping("/insert")
-	ResponseEntity<ResponseObject> insertPhongTro(@RequestBody ChiTietPhongTro phongMoi){
+	ChiTietPhongTro insertPhongTro(@RequestBody ChiTietPhongTro phongMoi){
 		
-		return	ResponseEntity.status(HttpStatus.CREATED).body(
-					new ResponseObject("OK", "Insert Phong Moi successfully", chiTietPhongTroRepository.save(phongMoi))
-					);
+//		return	ResponseEntity.status(HttpStatus.CREATED).body(
+//					new ResponseObject("OK", "Insert Phong Moi successfully", chiTietPhongTroRepository.save(phongMoi))
+//					);
+		return chiTietPhongTroRepository.save(phongMoi);
 	}
 	
 	@PutMapping("/update/{id}")
-	ResponseEntity<ResponseObject> updatePhongTro(@RequestBody ChiTietPhongTro phongMoi, @PathVariable Long id){
-		ChiTietPhongTro updatePhongTro = chiTietPhongTroRepository.findById(id)
-											.map(phongTro -> {
-												phongTro.setGia(phongMoi.getGia());
-												phongTro.setHinhAnh(phongMoi.getHinhAnh());
-												phongTro.setDien(phongMoi.getDien());
-												phongTro.setNuoc(phongMoi.getNuoc());
-												phongTro.setDienTich(phongMoi.getDienTich());
-												phongTro.setStatus(phongMoi.isStatus());
-												return chiTietPhongTroRepository.save(phongTro);
-											}).orElseGet(() -> {
-												phongMoi.setId(id);
-												return chiTietPhongTroRepository.save(phongMoi);
-
-											});
-		return ResponseEntity.status(HttpStatus.OK).body(
-				new ResponseObject("OK", "Update Phong Tro thanh cong",updatePhongTro)
-				);
+	ChiTietPhongTro updatePhongTro(@RequestBody ChiTietPhongTro phongMoi, @PathVariable Long id){
+//		ChiTietPhongTro updatePhongTro = chiTietPhongTroRepository.findById(id)
+//											.map(phongTro -> {
+//											
+//												phongTro.setGia(phongMoi.getGia());
+//												phongTro.setHinhAnh(phongMoi.getHinhAnh());
+//												phongTro.setDien(phongMoi.getDien());
+//												phongTro.setNuoc(phongMoi.getNuoc());
+//												phongTro.setDienTich(phongMoi.getDienTich());
+//												phongTro.setStatus(phongMoi.isStatus());
+//												return chiTietPhongTroRepository.save(phongTro);
+//										
+//											}).orElseGet(() -> {
+//												phongMoi.setId(id);
+//												return chiTietPhongTroRepository.save(phongMoi);
+//											});
+//		ChiTietPhongTro result = new ChiTietPhongTro();
+		Optional<ChiTietPhongTro> findChiTietPhongTro = chiTietPhongTroRepository.findById(id);
+		if (findChiTietPhongTro.isPresent()) {
+			ChiTietPhongTro phongTro = 	findChiTietPhongTro.get();
+			phongTro.setGia(phongMoi.getGia());
+			phongTro.setHinhAnh(phongMoi.getHinhAnh());
+			phongTro.setDien(phongMoi.getDien());
+			phongTro.setNuoc(phongMoi.getNuoc());
+			phongTro.setDienTich(phongMoi.getDienTich());
+			phongTro.setStatus(phongMoi.isStatus());
+			return chiTietPhongTroRepository.save(phongTro);
+		}else {
+			phongMoi.setId(id);
+			return chiTietPhongTroRepository.save(phongMoi);
+		}
+		
 	}
 	
 	// delete a Product => DELETE method
 	@DeleteMapping("/delete/{id}")
-	ResponseEntity<ResponseObject> deletePhongTro(@PathVariable Long id){
-		boolean exists = chiTietPhongTroRepository.existsById(id); 
-		if (exists) {
-			chiTietPhongTroRepository.deleteById(id);
-			return ResponseEntity.status(HttpStatus.OK).body(
-					new ResponseObject("OK", "Delete phong tro successfully", "")
-					);
+	ChiTietPhongTro deletePhongTro(@PathVariable Long id){
+//		boolean exists = chiTietPhongTroRepository.existsById(id); 
+//		if (exists) {
+//			chiTietPhongTroRepository.deleteById(id);
+//			return ResponseEntity.status(HttpStatus.OK).body(
+//					new ResponseObject("OK", "Delete phong tro successfully", "")
+//					);
+//		}
+//		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//				new ResponseObject("false", "cannot find phong tro to delete " , " ")
+//					);
+//		ChiTietPhongTro result = new ChiTietPhongTro();
+		Optional<ChiTietPhongTro> findChiTietPhongTro = chiTietPhongTroRepository.findById(id);
+		if(findChiTietPhongTro.isPresent()) {
+			ChiTietPhongTro phongTro = 	findChiTietPhongTro.get();
+			chiTietPhongTroRepository.delete(phongTro);
+			return phongTro;
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				new ResponseObject("false", "cannot find phong tro to delete " , " ")
-					);
+		
+		return null;
 		
 	}
 

@@ -109,7 +109,7 @@ public class ChiTietPhongTro  {
 
 	@Override
 	public String toString() {
-		return "ChiTietPhongTro [id=" + id + ", nhaTro="  + ", gia=" + gia + ", hinhAnh=" + hinhAnh + ", dien="
+		return "ChiTietPhongTro [id=" + id + ", nhaTroID=" + nhaTroId + ", gia=" + gia + ", hinhAnh=" + hinhAnh + ", dien="
 				+ dien + ", nuoc=" + nuoc + ", dienTich=" + dienTich + ", status=" + status + "]";
 	}
 
