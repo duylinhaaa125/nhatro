@@ -14,7 +14,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table
 public class ChiTietPhongTro  {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
